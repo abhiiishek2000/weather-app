@@ -58,9 +58,9 @@ This project follows **Clean Architecture** principles with:
 ```
 lib/
 ├── core/
-│   ├── common/              # Shared utilities and helpers
-│   ├── credentials/         # API keys and configuration
-│   ├── networking/          # HTTP client setup
+│   ├── common/             # Shared utilities and helpers
+│   ├── config/             # API keys and configuration
+│   ├── networking/         # HTTP client setup
 │   ├── routes/             # App navigation routes
 │   ├── services/           # Core services (location, permissions)
 │   ├── theme/              # App theme and styling
