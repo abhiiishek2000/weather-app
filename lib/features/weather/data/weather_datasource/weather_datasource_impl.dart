@@ -1,7 +1,6 @@
-import 'package:weather_app/core/credientials/api_creds.dart';
 import 'package:weather_app/core/networking/api_provider.dart';
 import 'package:weather_app/features/weather/data/weather_datasource/weather_datasource.dart';
-
+import '../../../../core/config/app_credentials.dart';
 import '../models/forecast_model.dart';
 import '../models/weather_model.dart';
 
@@ -16,7 +15,7 @@ class WeatherDataSourceImpl implements WeatherDataSource {
     Map<String, String> data = {
       'lat': lat.toString(),
       'lon': long.toString(),
-      'appid': weatherApiKey,
+      'appid': ApiCredentials.weatherApiKey,
       'units': 'metric',
     };
     print(data);
@@ -29,7 +28,7 @@ class WeatherDataSourceImpl implements WeatherDataSource {
   Future<WeatherModel> getWeatherByCityName(String cityName) async {
     Map<String, String> data = {
       'q': cityName,
-      'appid': weatherApiKey,
+      'appid': ApiCredentials.weatherApiKey,
       'units': 'metric',
     };
     var response = await _apiProvider.get('weather', data);
@@ -41,7 +40,7 @@ class WeatherDataSourceImpl implements WeatherDataSource {
     Map<String, String> data = {
       'lat': lat.toString(),
       'lon': long.toString(),
-      'appid': weatherApiKey,
+      'appid': ApiCredentials.weatherApiKey,
       'units': 'metric',
     };
     var response = await _apiProvider.get('weather', data);

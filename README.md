@@ -6,7 +6,6 @@ A Flutter app that shows weather data and forecasts using OpenWeatherMap API wit
 
 [Download Latest APK](https://drive.google.com/file/d/1PgANOuZuJXisKaN2t_c1ab6hwTprpbP3/view?usp=sharing)
 
-
 ## Features
 
 - Current weather display with temperature and conditions
@@ -16,49 +15,43 @@ A Flutter app that shows weather data and forecasts using OpenWeatherMap API wit
 - Google Maps with weather overlay
 - Location markers showing weather details
 
-## Setup
+## Setup Instructions
 
 ### 1. Clone the project
 ```bash
-git clone https://github.com/abhiishek2000/weather-app.git
-cd flutter-weather-app
+git clone https://github.com/abhiiishek2000/weather-app.git
+cd weather-app
 flutter pub get
 ```
 
-### 2. Add API Keys
+### 2. Get API Keys
+- **OpenWeatherMap**: [Sign up here](https://openweathermap.org/api)
+- **Google Maps**: [Get key from Google Cloud Console](https://console.cloud.google.com/)
 
-**Google Maps Key** - Add to `android/app/src/main/AndroidManifest.xml`:
+### 3. Setup API Keys
+
+**Update Google Maps in AndroidManifest.xml** - Keep existing hardcoded key:
 ```xml
 <meta-data
     android:name="com.google.android.geo.API_KEY"
-    android:value="YOUR_GOOGLE_MAPS_API_KEY" />
+    android:value="${googleMapsApiKey}" />
 ```
 
-**OpenWeather Key** - Update `lib/core/credentials/api_credentials.dart`:
-```dart
-const String weatherApiKey = 'YOUR_OPENWEATHER_API_KEY';
-```
-
-### 3. Run the app
+### 4. Run the app with dart-define
 ```bash
-flutter run
+flutter run --dart-define=WEATHER_BASE_URL=api.openweathermap.org --dart-define=WEATHER_BASE_EXTENDER=/data/2.5 --dart-define=WEATHER_API_KEY=yourApiKey --dart-define=GOOGLE_MAPS_API_KEY=yourMapApiKey
 ```
 
-## Get API Keys
-
-- **OpenWeatherMap**: Sign up at [openweathermap.org](https://openweathermap.org/api)
-- **Google Maps**: Get key from [Google Cloud Console](https://console.cloud.google.com/)
-
-## Architecture
+## Architecture Overview
 
 This project follows **Clean Architecture** principles with:
 
 - **State Management**: Bloc/Cubit pattern for predictable state handling
 - **Dependency Injection**: Using get_it for loose coupling between layers
 - **Layer Separation**:
-    - **Data Layer**: Repositories, data sources, models
-    - **Domain Layer**: Business logic, entities, use cases
-    - **Presentation Layer**: UI, Bloc/Cubit, widgets
+  - **Data Layer**: Repositories, data sources, models
+  - **Domain Layer**: Business logic, entities, use cases
+  - **Presentation Layer**: UI, Bloc/Cubit, widgets
 - **Error Handling**: Network errors, location permissions, API failures
 
 ## Project Structure
@@ -81,6 +74,3 @@ lib/
 ├── main_container_injection.dart
 └── main.dart
 ```
-
-
-

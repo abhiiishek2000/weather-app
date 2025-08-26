@@ -2,17 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../credientials/api_creds.dart';
+import '../config/app_credentials.dart';
 import 'exception.dart';
 
 class ApiProvider {
   Future<dynamic> get(String url, Map<String, String> map) async {
-    var mapHeader = {
-      'Accept': 'application/json',
-    };
+    var mapHeader = {'Accept': 'application/json'};
 
     try {
-      var uri = Uri.https(BaseUrl, '$PathExtender$url', map);
+      var uri = Uri.https(ApiCredentials.baseURL, '${ApiCredentials.weatherBaseExtender}/$url', map);
       debugPrint('request: $uri $url -$mapHeader');
       final response = await http.get(uri, headers: mapHeader);
       debugPrint('response: $uri $url - $map ${response.body}');
@@ -23,16 +21,22 @@ class ApiProvider {
       throw FetchDataException('Error: ${e.message}');
     }
   }
-  Future<dynamic> post(String url, Map<String, dynamic> body,
-      {Map<String, dynamic>? params}) async {
-    var mapHeader = {
-      'Content-Type': 'application/json; charset=UTF-8',
-    };
+
+  Future<dynamic> post(
+    String url,
+    Map<String, dynamic> body, {
+    Map<String, dynamic>? params,
+  }) async {
+    var mapHeader = {'Content-Type': 'application/json; charset=UTF-8'};
 
     try {
-      var uri = Uri.https(BaseUrl, '$PathExtender$url', params);
+      var uri = Uri.https(ApiCredentials.baseURL, "${ApiCredentials.weatherBaseExtender}/$url", params);
       debugPrint('request: $uri $url -$mapHeader - ${jsonEncode(body)} ');
-      final response = await http.post(uri, body: jsonEncode(body), headers: mapHeader);
+      final response = await http.post(
+        uri,
+        body: jsonEncode(body),
+        headers: mapHeader,
+      );
       debugPrint('response: $uri $url - $body ${response.body}');
       return _response(response);
     } on SocketException {
@@ -42,13 +46,7 @@ class ApiProvider {
     }
   }
 
-
   /// Add more methods as needed for PUT, DELETE, etc.
-
-
-
-
-
 
   dynamic _response(http.Response response) async {
     switch (response.statusCode) {
@@ -59,7 +57,9 @@ class ApiProvider {
       case 400:
         throw FetchDataException(response.body);
       case 401:
-        throw UnauthorisedException('Unauthorized access. Redirecting to login.');
+        throw UnauthorisedException(
+          'Unauthorized access. Redirecting to login.',
+        );
       default:
         throw FetchDataException(response.body);
     }
